@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/input_field.dart';
 import '../widgets/custom_button.dart';
-import '../theme/app_theme.dart';
-import 'home_page.dart';
+import '../widgets/social_button.dart';
+import '../theme/app_colors.dart';
+import '../services/navigation_service.dart';
+import '../pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,6 +22,8 @@ class _LoginPageState extends State<LoginPage>
   
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -64,21 +68,45 @@ class _LoginPageState extends State<LoginPage>
     super.dispose();
   }
 
+  void _handleLogin() {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email dan password harus diisi'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simulasi proses login
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+      
+      NavigationService.navigateReplacement('/home');
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login berhasil! Selamat datang di Rungokno Tembang 🎵'),
+          backgroundColor: AppColors.success,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF0F0B1E),
-              Color(0xFF1A1529),
-              Color(0xFF242038),
-            ],
-            stops: [0.0, 0.5, 1.0],
-          ),
+          gradient: AppColors.backgroundGradient,
         ),
         child: Center(
           child: SingleChildScrollView(
@@ -92,7 +120,7 @@ class _LoginPageState extends State<LoginPage>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Animated Logo/Music Icon
+                      // Animated Logo
                       Container(
                         width: 120,
                         height: 120,
@@ -117,40 +145,28 @@ class _LoginPageState extends State<LoginPage>
                       const SizedBox(height: 32),
                       
                       // App Title
-                      RichText(
-                        text: const TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Rungonko ',
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.onBackground,
-                                fontFamily: 'Poppins',
-                              ),
+                      const Column(
+                        children: [
+                          Text(
+                            'Rungokno Tembang',
+                            style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.onBackground,
+                              fontFamily: 'Poppins',
+                              letterSpacing: 1.2,
                             ),
-                            TextSpan(
-                              text: 'Tembang',
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.accent,
-                                fontFamily: 'Poppins',
-                              ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            "🎵 Dengarkan musik tanpa batas 🎵",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.onSurface,
+                              fontFamily: 'Poppins',
                             ),
-                          ],
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 8),
-                      
-                      const Text(
-                        "Dengarkan musik tanpa batas",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.onSurface,
-                          fontFamily: 'Poppins',
-                        ),
+                          ),
+                        ],
                       ),
                       
                       const SizedBox(height: 40),
@@ -160,6 +176,16 @@ class _LoginPageState extends State<LoginPage>
                         label: "Email",
                         prefixIcon: Icons.email_outlined,
                         controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Email harus diisi';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Email tidak valid';
+                          }
+                          return null;
+                        },
                       ),
                       
                       const SizedBox(height: 20),
@@ -167,9 +193,19 @@ class _LoginPageState extends State<LoginPage>
                       // Password Input
                       InputField(
                         label: "Password",
-                        obscure: true,
+                        obscure: _obscurePassword,
                         prefixIcon: Icons.lock_outline,
                         controller: _passwordController,
+                        hintText: 'Minimal 6 karakter',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password harus diisi';
+                          }
+                          if (value.length < 6) {
+                            return 'Password minimal 6 karakter';
+                          }
+                          return null;
+                        },
                       ),
                       
                       const SizedBox(height: 24),
@@ -177,15 +213,9 @@ class _LoginPageState extends State<LoginPage>
                       // Login Button
                       CustomButton(
                         text: "Masuk ke Akun",
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const HomePage(),
-                            ),
-                          );
-                        },
+                        onPressed: _handleLogin,
                         icon: Icons.login,
+                        isLoading: _isLoading,
                       ),
                       
                       const SizedBox(height: 20),
@@ -220,22 +250,25 @@ class _LoginPageState extends State<LoginPage>
                       const SizedBox(height: 20),
                       
                       // Social Login Buttons
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SocialButton(
                             icon: Icons.g_translate,
-                            onPressed: () {},
+                            onPressed: _handleGoogleLogin,
+                            tooltip: 'Login dengan Google',
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           SocialButton(
                             icon: Icons.facebook,
-                            onPressed: () {},
+                            onPressed: _handleFacebookLogin,
+                            tooltip: 'Login dengan Facebook',
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           SocialButton(
                             icon: Icons.apple,
-                            onPressed: () {},
+                            onPressed: _handleAppleLogin,
+                            tooltip: 'Login dengan Apple',
                           ),
                         ],
                       ),
@@ -244,14 +277,47 @@ class _LoginPageState extends State<LoginPage>
                       
                       // Sign Up Link
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: AppColors.cardBackground,
+                              title: const Text(
+                                'Daftar Akun Baru',
+                                style: TextStyle(
+                                  color: AppColors.onBackground,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'Fitur pendaftaran akun baru akan segera hadir dalam versi selanjutnya!',
+                                    style: TextStyle(
+                                      color: AppColors.onSurface,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  CustomButton(
+                                    text: "Mengerti",
+                                    onPressed: () => Navigator.pop(context),
+                                    width: 120,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                         child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: [
-                              const TextSpan(
+                              TextSpan(
                                 text: "Belum punya akun? ",
                                 style: TextStyle(
                                   color: AppColors.onSurface,
+                                  fontSize: 14,
                                 ),
                               ),
                               TextSpan(
@@ -259,6 +325,7 @@ class _LoginPageState extends State<LoginPage>
                                 style: TextStyle(
                                   color: AppColors.accent,
                                   fontWeight: FontWeight.w600,
+                                  fontSize: 14,
                                 ),
                               ),
                             ],
@@ -277,40 +344,14 @@ class _LoginPageState extends State<LoginPage>
   }
 }
 
-class SocialButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onPressed;
+void _handleGoogleLogin() {
+  // Implementation for Google login
+}
 
-  const SocialButton({
-    super.key,
-    required this.icon,
-    required this.onPressed,
-  });
+void _handleFacebookLogin() {
+  // Implementation for Facebook login
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: IconButton(
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
-          color: AppColors.onSurface,
-          size: 24,
-        ),
-      ),
-    );
-  }
+void _handleAppleLogin() {
+  // Implementation for Apple login
 }

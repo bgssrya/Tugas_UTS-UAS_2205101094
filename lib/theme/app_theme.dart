@@ -1,36 +1,5 @@
 import 'package:flutter/material.dart';
-
-class AppColors {
-  // Palet warna utama
-  static const Color primary = Color(0xFF8A2BE2);
-  static const Color secondary = Color(0xFFFF6B8B);
-  static const Color accent = Color(0xFF00D4FF);
-  static const Color background = Color(0xFF0F0B1E);
-  static const Color cardBackground = Color(0xFF1A1529);
-  static const Color surface = Color(0xFF242038);
-  static const Color onPrimary = Color(0xFFFFFFFF);
-  static const Color onBackground = Color(0xFFE6E1FF);
-  static const Color onSurface = Color(0xFFC1B8E6);
-
-  // Gradient
-  static const LinearGradient primaryGradient = LinearGradient(
-    colors: [primary, secondary],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  static const LinearGradient accentGradient = LinearGradient(
-    colors: [accent, Color(0xFF9D4EDD)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  static const LinearGradient cardGradient = LinearGradient(
-    colors: [cardBackground, surface],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-}
+import 'app_colors.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
@@ -46,6 +15,7 @@ class AppTheme {
         onPrimary: AppColors.onPrimary,
         onBackground: AppColors.onBackground,
         onSurface: AppColors.onSurface,
+        error: AppColors.error,
       ),
 
       scaffoldBackgroundColor: AppColors.background,
@@ -84,17 +54,31 @@ class AppTheme {
           horizontal: 20,
           vertical: 18,
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: AppColors.error,
+            width: 1,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: AppColors.error,
+            width: 2,
+          ),
+        ),
       ),
 
-      // 🔥 FIX UTAMA
       cardTheme: CardThemeData(
         color: AppColors.cardBackground,
         elevation: 8,
         shadowColor: Colors.black54,
-        surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        surfaceTintColor: Colors.transparent,
+        margin: const EdgeInsets.all(8),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -104,23 +88,30 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 18),
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
           textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             fontFamily: 'Poppins',
           ),
+          elevation: 0,
         ),
       ),
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.accent,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
 
       iconTheme: const IconThemeData(
         color: AppColors.onSurface,
+        size: 24,
       ),
 
       listTileTheme: ListTileThemeData(
@@ -129,6 +120,51 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
         ),
         iconColor: AppColors.accent,
+        textColor: AppColors.onBackground,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.surface,
+        selectedItemColor: AppColors.accent,
+        unselectedItemColor: AppColors.onSurface,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+      ),
+
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.cardBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        titleTextStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: AppColors.onBackground,
+        ),
+        contentTextStyle: const TextStyle(
+          fontSize: 14,
+          color: AppColors.onSurface,
+        ),
+      ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: AppColors.primary.withOpacity(0.9),
+        contentTextStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.accent,
+        linearTrackColor: AppColors.surface,
       ),
     );
   }
