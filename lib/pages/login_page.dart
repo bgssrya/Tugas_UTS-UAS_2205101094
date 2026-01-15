@@ -145,6 +145,7 @@ class _LoginPageState extends State<LoginPage>
                       const SizedBox(height: 32),
                       
                       // App Title
+<<<<<<< HEAD
                       const Column(
                         children: [
                           Text(
@@ -155,6 +156,19 @@ class _LoginPageState extends State<LoginPage>
                               color: AppColors.onBackground,
                               fontFamily: 'Poppins',
                               letterSpacing: 1.2,
+=======
+                      RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Rungokno ',
+                              style: TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.onBackground,
+                                fontFamily: 'Poppins',
+                              ),
+>>>>>>> 6412432c348e6dccc3ce778574e7571bb2745e2f
                             ),
                           ),
                           SizedBox(height: 4),
@@ -352,6 +366,36 @@ void _handleFacebookLogin() {
   // Implementation for Facebook login
 }
 
+<<<<<<< HEAD
 void _handleAppleLogin() {
   // Implementation for Apple login
 }
+=======
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          icon,
+          color: AppColors.onSurface,
+          size: 24,
+        ),
+      ),
+    );
+  }
+}
+>>>>>>> 6412432c348e6dccc3ce778574e7571bb2745e2f

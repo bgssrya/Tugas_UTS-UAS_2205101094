@@ -41,7 +41,47 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
+<<<<<<< HEAD
           // Welcome Section
+=======
+          // App Bar
+          SliverAppBar(
+            expandedHeight: 200,
+            collapsedHeight: 80,
+            pinned: true,
+            floating: true,
+            backgroundColor: AppColors.surface.withOpacity(0.8),
+            foregroundColor: AppColors.onBackground,
+            flexibleSpace: FlexibleSpaceBar(
+              title: const Text(
+                'Rungokno Tembang',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.onBackground,
+                ),
+              ),
+              centerTitle: true,
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: AppColors.primaryGradient,
+                ),
+              ),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.search, size: 28),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notifications_outlined, size: 28),
+              ),
+            ],
+          ),
+          
+          // Now Playing Section
+>>>>>>> 6412432c348e6dccc3ce778574e7571bb2745e2f
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -644,4 +684,242 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+class NowPlayingCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: AppColors.cardGradient,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: const DecorationImage(
+                    image: NetworkImage('https://picsum.photos/200/200?random=4'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Midnight City',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.onBackground,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'M83',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.skip_previous,
+                              color: AppColors.onSurface, size: 28),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: AppColors.accentGradient,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.accent.withOpacity(0.4),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.play_arrow,
+                                color: Colors.white, size: 32),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.skip_next,
+                              color: AppColors.onSurface, size: 28),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class QuickActionCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final Color color;
+
+  const QuickActionCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: color.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 40,
+            color: color,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MusicCard extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String artist;
+
+  const MusicCard({
+    super.key,
+    required this.imageUrl,
+    required this.title,
+    required this.artist,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 160,
+      decoration: BoxDecoration(
+        gradient: AppColors.cardGradient,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: Image.network(
+              imageUrl,
+              height: 120,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.onBackground,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  artist,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppColors.onSurface,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.play_circle_fill,
+                          color: AppColors.accent, size: 32),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite_border,
+                          color: AppColors.onSurface, size: 24),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+>>>>>>> 6412432c348e6dccc3ce778574e7571bb2745e2f
