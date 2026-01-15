@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage>
                         text: const TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Rungonko ',
+                              text: 'Rungokno ',
                               style: TextStyle(
                                 fontSize: 36,
                                 fontWeight: FontWeight.w800,
