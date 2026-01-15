@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
             foregroundColor: AppColors.onBackground,
             flexibleSpace: FlexibleSpaceBar(
               title: const Text(
-                'Rungonko Tembang',
+                'Rungokno Tembang',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
